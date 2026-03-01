@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>QuikLearn | National Science Olympiad 2026</title>
+  <title>QuikLearn | Dashboard</title>
   <script src="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.6.0/js/all.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.3/dist/confetti.browser.min.js"></script>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -12,19 +12,18 @@
       --primary: #6366f1;
       --accent: #a855f7;
       --bg: #0f172a;
-      --surface: rgba(15, 23, 42, 0.85);
+      --surface: rgba(15, 23, 42, 0.92);
       --text: #f1f5f9;
       --text-secondary: #94a3b8;
       --success: #22c55e;
-      --danger: #ef4444;
-      --border: rgba(148, 163, 184, 0.2);
+      --border: rgba(148, 163, 184, 0.25);
     }
     .light {
       --bg: #f8fafc;
-      --surface: rgba(255, 255, 255, 0.95);
+      --surface: rgba(255, 255, 255, 0.97);
       --text: #0f172a;
       --text-secondary: #64748b;
-      --border: rgba(148, 163, 184, 0.3);
+      --border: rgba(148, 163, 184, 0.35);
     }
     * { margin:0; padding:0; box-sizing:border-box; }
     body {
@@ -32,165 +31,95 @@
       background: var(--bg);
       color: var(--text);
       min-height: 100vh;
-      transition: background 0.3s ease;
+      transition: all 0.4s ease;
     }
-    .glass {
-      background: var(--surface);
-      backdrop-filter: blur(16px);
-      border: 1px solid var(--border);
-      border-radius: 20px;
-      box-shadow: 0 8px 32px rgba(0,0,0,0.15);
-    }
+    .glass { background: var(--surface); backdrop-filter: blur(20px); border: 1px solid var(--border); border-radius: 24px; box-shadow: 0 10px 40px rgba(0,0,0,0.2); }
+
+    /* Navbar */
     .navbar {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 1rem 5%;
-      background: rgba(15,23,42,0.95);
-      backdrop-filter: blur(12px);
-      position: sticky;
-      top: 0;
-      z-index: 100;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 1.2rem 5%; background: rgba(15,23,42,0.95); backdrop-filter: blur(16px);
+      position: sticky; top: 0; z-index: 1000;
     }
     .logo {
-      font-size: 1.75rem;
-      font-weight: 700;
+      font-size: 1.85rem; font-weight: 700;
       background: linear-gradient(90deg, var(--primary), var(--accent));
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+    }
+    .nav-links {
+      display: flex; gap: 2rem; align-items: center;
     }
     .nav-links a {
-      color: var(--text);
-      margin: 0 1rem;
-      text-decoration: none;
-      font-weight: 500;
+      color: var(--text); text-decoration: none; font-weight: 500; transition: 0.3s;
     }
-    .header {
-      text-align: center;
-      padding: 2rem 1rem;
+    .nav-links a.active, .nav-links a:hover { color: var(--primary); }
+    .hamburger { display: none; font-size: 1.8rem; cursor: pointer; }
+
+    /* Hero */
+    .hero {
+      padding: 5rem 5% 4rem; text-align: center;
       background: linear-gradient(135deg, #1e2937, #334155);
+      position: relative; overflow: hidden;
     }
-    .quiz-container {
-      max-width: 800px;
-      margin: 2rem auto;
-      padding: 2rem;
+    .hero::after {
+      content: ''; position: absolute; top: -50%; left: -50%; width: 200%; height: 200%;
+      background: radial-gradient(circle, rgba(165,243,252,0.15) 0%, transparent 70%);
+      animation: shine 8s linear infinite;
     }
-    .quiz-card {
-      padding: 2.5rem;
+    .hero h1 {
+      font-size: 3.2rem; font-weight: 700; line-height: 1.1;
+      background: linear-gradient(90deg, #fff, #a5f3fc); -webkit-background-clip: text; -webkit-text-fill-color: transparent;
     }
-    .progress-bar {
-      height: 6px;
-      background: var(--accent);
-      border-radius: 9999px;
-      transition: width 0.4s ease;
+    .hero p { font-size: 1.35rem; color: var(--text-secondary); max-width: 620px; margin: 1rem auto; }
+
+    /* Stats & Cards */
+    .stats-grid {
+      display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 1.5rem;
+      padding: 2rem 5%;
     }
-    .timer {
-      display: flex;
-      align-items: center;
-      gap: 1rem;
-      font-size: 1.25rem;
-      font-weight: 600;
+    .stat-card {
+      padding: 2rem 1.5rem; text-align: center; transition: 0.4s;
     }
-    .timer-circle {
-      width: 60px;
-      height: 60px;
-      border-radius: 50%;
-      background: conic-gradient(var(--accent) 0% 100%, #334155 0% 100%);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 1.1rem;
-      font-weight: 700;
+    .stat-card:hover { transform: translateY(-10px); }
+    .flame { font-size: 3.5rem; animation: flame 1.5s infinite alternate; }
+    @keyframes flame { from { transform: scale(1); } to { transform: scale(1.15); } }
+
+    .progress-ring {
+      width: 90px; height: 90px; margin: 0 auto 1rem;
+      border-radius: 50%; background: conic-gradient(var(--accent) 0% 85%, #334155 85% 100%);
+      display: flex; align-items: center; justify-content: center;
     }
-    .question {
-      font-size: 1.35rem;
-      margin: 2rem 0;
-      line-height: 1.4;
+    .progress-inner { width: 70px; height: 70px; background: var(--surface); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1.6rem; font-weight: 700; }
+
+    .featured-grid {
+      display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1.5rem;
+      padding: 0 5% 3rem;
     }
-    .options {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-      gap: 1rem;
+    .featured-card {
+      padding: 1.8rem; transition: 0.4s; cursor: pointer;
     }
-    .option {
-      padding: 1.25rem;
-      border: 2px solid var(--border);
-      border-radius: 16px;
-      cursor: pointer;
-      transition: all 0.3s ease;
-      display: flex;
-      align-items: center;
-      gap: 1rem;
-    }
-    .option:hover {
-      transform: translateY(-4px);
-      border-color: var(--primary);
-    }
-    .option.selected {
-      border-color: var(--primary);
-      background: rgba(99, 102, 241, 0.15);
-    }
-    .option.correct { border-color: var(--success); background: rgba(34, 197, 94, 0.15); }
-    .option.wrong { border-color: var(--danger); background: rgba(239, 68, 68, 0.15); }
+    .featured-card:hover { transform: translateY(-12px); box-shadow: 0 20px 40px rgba(0,0,0,0.3); }
 
     .btn {
-      padding: 0.75rem 2rem;
-      border: none;
-      border-radius: 9999px;
-      font-weight: 600;
-      cursor: pointer;
-      transition: all 0.3s ease;
+      padding: 0.9rem 2.2rem; border: none; border-radius: 9999px;
+      font-weight: 600; cursor: pointer; transition: all 0.3s ease;
     }
     .btn-primary {
       background: linear-gradient(90deg, var(--primary), var(--accent));
-      color: white;
+      color: white; box-shadow: 0 4px 15px rgba(99,102,241,0.4);
     }
-    .btn-primary:disabled {
-      opacity: 0.6;
-      cursor: not-allowed;
+    .btn-primary:hover { transform: scale(1.08); box-shadow: 0 8px 25px rgba(99,102,241,0.5); }
+
+    footer {
+      text-align: center; padding: 2rem 5%; color: var(--text-secondary); font-size: 0.95rem;
+      border-top: 1px solid var(--border);
     }
 
-    .modal {
-      position: fixed;
-      inset: 0;
-      background: rgba(0,0,0,0.7);
-      display: none;
-      align-items: center;
-      justify-content: center;
-      z-index: 200;
-    }
-    .modal-content {
-      background: var(--surface);
-      padding: 3rem 2.5rem;
-      border-radius: 24px;
-      max-width: 420px;
-      text-align: center;
-      animation: pop 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
-    }
-    @keyframes pop {
-      from { transform: scale(0.6); opacity: 0; }
-      to { transform: scale(1); opacity: 1; }
-    }
-
-    .toast {
-      position: fixed;
-      bottom: 24px;
-      left: 50%;
-      transform: translateX(-50%);
-      background: #1e2937;
-      color: white;
-      padding: 1rem 2rem;
-      border-radius: 9999px;
-      display: none;
-      align-items: center;
-      gap: 0.75rem;
-      z-index: 300;
-      box-shadow: 0 10px 15px rgba(0,0,0,0.2);
-    }
-
-    @media (max-width: 640px) {
-      .options { grid-template-columns: 1fr; }
-      .quiz-card { padding: 1.5rem; }
+    @media (max-width: 768px) {
+      .nav-links { display: none; flex-direction: column; position: absolute; top: 70px; left: 0; width: 100%; background: var(--surface); padding: 1.5rem 0; gap: 1rem; }
+      .nav-links.active { display: flex; }
+      .hamburger { display: block; }
+      .hero h1 { font-size: 2.4rem; }
     }
   </style>
 </head>
@@ -198,298 +127,109 @@
   <!-- Navbar -->
   <nav class="navbar glass">
     <div class="logo">QuikLearn</div>
-    <div class="nav-links">
-      <a href="#">Dashboard</a>
-      <a href="#">Subjects</a>
+    
+    <div class="nav-links" id="navLinks">
+      <a href="index.html" class="active">Home</a>
+      <a href="courses.html">Courses</a>
+      <a href="olympiad.html">Olympiad</a>
       <a href="#">Leaderboard</a>
     </div>
-    <div style="display:flex; align-items:center; gap:1rem;">
-      <div onclick="toggleTheme()" style="cursor:pointer; font-size:1.4rem;">
+
+    <div style="display:flex; align-items:center; gap:1.2rem;">
+      <div onclick="toggleTheme()" style="cursor:pointer; font-size:1.6rem;">
         <i id="theme-icon" class="fas fa-moon"></i>
       </div>
-      <div style="display:flex; align-items:center; gap:0.75rem; background:rgba(255,255,255,0.1); padding:0.5rem 1rem; border-radius:9999px;">
-        <img src="https://i.pravatar.cc/40" alt="User" style="width:32px; height:32px; border-radius:50%;">
+      <div style="display:flex; align-items:center; gap:0.8rem; background:rgba(255,255,255,0.1); padding:0.6rem 1.2rem; border-radius:9999px;">
+        <img src="https://i.pravatar.cc/44" alt="User" style="width:38px; height:38px; border-radius:50%; border:2px solid var(--accent);">
         <div>
-          <div style="font-size:0.95rem; font-weight:600;">Aarav Sharma</div>
-          <div style="font-size:0.8rem; color:var(--text-secondary);">Class 10 • Sudarshan Labs</div>
+          <div style="font-weight:600; font-size:1.05rem;">Aarav Sharma</div>
+          <div style="font-size:0.85rem; color:var(--text-secondary);">Class 10 • 1,240 XP</div>
         </div>
       </div>
+      <div class="hamburger" onclick="toggleMenu()">☰</div>
     </div>
   </nav>
 
-  <!-- Header -->
-  <div class="header">
-    <h1 style="font-size:2.25rem; margin-bottom:0.5rem;">National Science Olympiad 2026</h1>
-    <p style="color:var(--text-secondary);">Win 500 XP • Gold Badge • Top 100 Leaderboard</p>
-    <div style="margin-top:1rem; display:flex; justify-content:center; gap:2rem; font-size:1.1rem;">
-      <div><i class="fas fa-fire" style="color:#f59e0b;"></i> 7-day streak</div>
-      <div><i class="fas fa-trophy" style="color:#eab308;"></i> 1,240 XP this month</div>
+  <!-- Hero -->
+  <div class="hero">
+    <h1>Welcome back, Aarav! 👋</h1>
+    <p>7-day streak alive! Let's smash today's goal and unlock new badges.</p>
+    <a href="olympiad.html" class="btn btn-primary" style="margin-top:2.2rem; font-size:1.15rem; padding:1rem 2.8rem;">🚀 Start Science Olympiad Now</a>
+  </div>
+
+  <!-- Stats -->
+  <div class="stats-grid">
+    <div class="stat-card glass">
+      <div class="flame">🔥</div>
+      <div style="font-size:3.2rem; font-weight:700; margin:0.5rem 0;">7</div>
+      <div style="color:#f59e0b; font-weight:600;">Day Streak</div>
+    </div>
+    <div class="stat-card glass">
+      <div style="font-size:3.2rem; font-weight:700; color:#eab308;">1,240</div>
+      <div style="margin-top:0.5rem;">XP This Month</div>
+    </div>
+    <div class="stat-card glass">
+      <div class="progress-ring">
+        <div class="progress-inner">85%</div>
+      </div>
+      <div>Overall Progress</div>
     </div>
   </div>
 
-  <!-- Quiz Container -->
-  <div class="quiz-container glass">
-    <div class="quiz-card">
-      <!-- Progress -->
-      <div style="display:flex; justify-content:space-between; margin-bottom:1rem; font-size:0.95rem;">
-        <div>Question <span id="q-number">1</span>/5</div>
-        <div class="timer">
-          <div id="timer-circle" class="timer-circle">45</div>
-          <div>seconds left</div>
-        </div>
+  <!-- Featured -->
+  <div style="padding:0 5% 2rem;">
+    <h2 style="font-size:1.8rem; margin-bottom:1.5rem;">Featured Challenges</h2>
+    <div class="featured-grid">
+      <div class="featured-card glass" onclick="window.location.href='olympiad.html'">
+        <div style="height:160px; background:linear-gradient(45deg,#6366f1,#a855f7); border-radius:20px; margin-bottom:1.2rem;"></div>
+        <h3>National Science Olympiad 2026</h3>
+        <p style="color:var(--text-secondary);">45 sec/question • 500 XP reward</p>
+        <button class="btn btn-primary" style="margin-top:1.2rem; width:100%;">Start Now →</button>
       </div>
-      <div class="progress-bar" id="progress-bar" style="width:20%;"></div>
 
-      <!-- Question -->
-      <div id="question-text" class="question"></div>
-
-      <!-- Options -->
-      <div id="options" class="options"></div>
-
-      <!-- Footer buttons -->
-      <div style="margin-top:2.5rem; display:flex; justify-content:flex-end; gap:1rem;">
-        <button id="next-btn" class="btn btn-primary" onclick="nextQuestion()" disabled>Next Question →</button>
+      <div class="featured-card glass">
+        <div style="height:160px; background:linear-gradient(45deg,#22c55e,#eab308); border-radius:20px; margin-bottom:1.2rem;"></div>
+        <h3>Math Mastery - Class 10</h3>
+        <p style="color:var(--text-secondary);">20 lessons • 300 XP</p>
+        <button class="btn btn-primary" style="margin-top:1.2rem; width:100%;">Continue →</button>
       </div>
     </div>
   </div>
 
-  <!-- Result Modal -->
-  <div id="result-modal" class="modal">
-    <div class="modal-content glass">
-      <h2 id="result-title" style="font-size:2rem; margin-bottom:1rem;"></h2>
-      <div id="score-circle" style="width:160px; height:160px; margin:1.5rem auto; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:3rem; font-weight:700; border:12px solid var(--accent);"></div>
-      
-      <div style="margin:1.5rem 0; font-size:1.25rem;">
-        You earned <span id="xp-earned" style="color:#22c55e; font-weight:700;">+420 XP</span>
-      </div>
-      <div id="badge-unlock" style="display:none; background:rgba(234,179,8,0.2); color:#eab308; padding:0.75rem; border-radius:12px; margin:1rem 0;">
-        🏆 Gold Olympiad Badge Unlocked!
-      </div>
-      
-      <button onclick="restartQuiz()" class="btn btn-primary" style="width:100%; margin-top:1rem;">Try Again</button>
-      <button onclick="closeModal()" style="margin-top:1rem; background:none; border:none; color:var(--text-secondary); cursor:pointer;">Back to Dashboard</button>
-    </div>
-  </div>
-
-  <!-- Toast -->
-  <div id="toast" class="toast">
-    <i class="fas fa-check-circle"></i>
-    <span id="toast-text"></span>
-  </div>
+  <!-- Footer -->
+  <footer>
+    © 2026 QuikLearn - A product of Sudarshan Labs<br>
+    Made with ❤️ for Indian students | Premium feel, zero cost
+  </footer>
 
   <script>
-    // ============== DATA ==============
-    const questions = [
-      {
-        q: "What is the chemical symbol for Gold?",
-        options: ["Au", "Ag", "Fe", "Cu"],
-        correct: 0,
-        explanation: "Gold is element number 79 with symbol Au (from Latin 'aurum')."
-      },
-      {
-        q: "Which planet is known as the Red Planet?",
-        options: ["Venus", "Mars", "Jupiter", "Saturn"],
-        correct: 1,
-        explanation: "Mars appears red due to iron oxide (rust) on its surface."
-      },
-      {
-        q: "What is the SI unit of force?",
-        options: ["Joule", "Newton", "Watt", "Pascal"],
-        correct: 1,
-        explanation: "Force is measured in Newtons (kg·m/s²)."
-      },
-      {
-        q: "The pH value of pure water is?",
-        options: ["0", "7", "14", "5"],
-        correct: 1,
-        explanation: "Pure water is neutral with pH = 7 at 25°C."
-      },
-      {
-        q: "Which gas is most abundant in Earth's atmosphere?",
-        options: ["Oxygen", "Carbon Dioxide", "Nitrogen", "Hydrogen"],
-        correct: 2,
-        explanation: "Nitrogen makes up approximately 78% of dry air."
-      }
-    ];
-
-    // ============== STATE ==============
-    let currentQuestion = 0;
-    let score = 0;
-    let userAnswers = [];
-    let timerInterval = null;
-    let timeLeft = 45;
-    let isAnswered = false;
-
-    // ============== DOM REFERENCES ==============
-    const qNumberEl = document.getElementById('q-number');
-    const progressBar = document.getElementById('progress-bar');
-    const questionText = document.getElementById('question-text');
-    const optionsContainer = document.getElementById('options');
-    const nextBtn = document.getElementById('next-btn');
-    const timerCircle = document.getElementById('timer-circle');
-    const resultModal = document.getElementById('result-modal');
-
-    // ============== RENDER QUESTION ==============
-    function loadQuestion() {
-      const q = questions[currentQuestion];
-      qNumberEl.textContent = currentQuestion + 1;
-      progressBar.style.width = `${((currentQuestion + 1) / questions.length) * 100}%`;
-      
-      questionText.textContent = q.q;
-      optionsContainer.innerHTML = '';
-
-      q.options.forEach((opt, i) => {
-        const div = document.createElement('div');
-        div.className = 'option glass';
-        div.innerHTML = `
-          <span style="width:28px; height:28px; border:2px solid var(--border); border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:0.9rem;">
-            ${String.fromCharCode(65 + i)}
-          </span>
-          <span>${opt}</span>
-        `;
-        div.onclick = () => selectOption(i, div);
-        optionsContainer.appendChild(div);
-      });
-
-      isAnswered = false;
-      nextBtn.disabled = true;
-      startTimer();
+    // Hamburger Menu
+    function toggleMenu() {
+      document.getElementById('navLinks').classList.toggle('active');
     }
 
-    function selectOption(index, element) {
-      if (isAnswered) return;
-      isAnswered = true;
-      clearInterval(timerInterval);
-
-      // Highlight all options
-      Array.from(optionsContainer.children).forEach((el, i) => {
-        el.style.pointerEvents = 'none';
-        if (i === questions[currentQuestion].correct) el.classList.add('correct');
-        if (i === index && i !== questions[currentQuestion].correct) el.classList.add('wrong');
-      });
-
-      if (index === questions[currentQuestion].correct) {
-        score++;
-        showToast('Correct! +100 XP', '#22c55e');
-      } else {
-        showToast('Not quite. Keep going!', '#ef4444');
-      }
-
-      userAnswers[currentQuestion] = index;
-      nextBtn.disabled = false;
-    }
-
-    // ============== TIMER ==============
-    function startTimer() {
-      timeLeft = 45;
-      timerCircle.textContent = timeLeft;
-      timerCircle.style.background = `conic-gradient(var(--accent) 0% 100%, #334155 0% 100%)`;
-
-      if (timerInterval) clearInterval(timerInterval);
-      
-      timerInterval = setInterval(() => {
-        timeLeft--;
-        timerCircle.textContent = timeLeft;
-
-        const percent = (timeLeft / 45) * 100;
-        timerCircle.style.background = `conic-gradient(var(--accent) 0% ${percent}%, #334155 ${percent}% 100%)`;
-
-        if (timeLeft <= 10) timerCircle.style.color = '#ef4444';
-
-        if (timeLeft <= 0) {
-          clearInterval(timerInterval);
-          autoSubmit();
-        }
-      }, 1000);
-    }
-
-    function autoSubmit() {
-      isAnswered = true;
-      Array.from(optionsContainer.children).forEach((el, i) => {
-        el.style.pointerEvents = 'none';
-        if (i === questions[currentQuestion].correct) el.classList.add('correct');
-      });
-      nextBtn.disabled = false;
-      showToast('Time\'s up!', '#ef4444');
-    }
-
-    // ============== NEXT / SUBMIT ==============
-    function nextQuestion() {
-      clearInterval(timerInterval);
-      currentQuestion++;
-
-      if (currentQuestion < questions.length) {
-        loadQuestion();
-      } else {
-        showResult();
-      }
-    }
-
-    // ============== RESULT ==============
-    function showResult() {
-      const percentage = Math.round((score / questions.length) * 100);
-      const xpEarned = Math.round(percentage * 12) + 80; // streak bonus
-
-      document.getElementById('result-title').textContent = percentage >= 80 ? 'Outstanding!' : 'Great Effort!';
-      document.getElementById('score-circle').innerHTML = `${percentage}<span style="font-size:1rem; vertical-align:super;">%</span>`;
-      document.getElementById('xp-earned').textContent = `+${xpEarned} XP`;
-
-      if (percentage >= 80) {
-        document.getElementById('badge-unlock').style.display = 'block';
-      }
-
-      resultModal.style.display = 'flex';
-
-      // Confetti for good scores
-      if (percentage >= 70) {
-        confetti({
-          particleCount: 150,
-          spread: 70,
-          origin: { y: 0.6 }
-        });
-      }
-    }
-
-    function closeModal() {
-      resultModal.style.display = 'none';
-    }
-
-    function restartQuiz() {
-      currentQuestion = 0;
-      score = 0;
-      userAnswers = [];
-      resultModal.style.display = 'none';
-      loadQuestion();
-    }
-
-    // ============== THEME ==============
+    // Theme Toggle
     function toggleTheme() {
       document.body.classList.toggle('light');
-      const isLight = document.body.classList.contains('light');
-      document.getElementById('theme-icon').className = isLight ? 'fas fa-sun' : 'fas fa-moon';
-      localStorage.setItem('quiklearn-theme', isLight ? 'light' : 'dark');
+      const icon = document.getElementById('theme-icon');
+      icon.className = document.body.classList.contains('light') ? 'fas fa-sun' : 'fas fa-moon';
+      localStorage.setItem('quiklearn-theme', document.body.classList.contains('light') ? 'light' : 'dark');
     }
 
-    // ============== TOAST ==============
-    function showToast(msg, color) {
-      const toast = document.getElementById('toast');
-      document.getElementById('toast-text').textContent = msg;
-      toast.style.background = color || '#1e2937';
-      toast.style.display = 'flex';
-      setTimeout(() => toast.style.display = 'none', 2500);
+    // Load saved theme
+    if (localStorage.getItem('quiklearn-theme') === 'light') {
+      document.body.classList.add('light');
+      document.getElementById('theme-icon').className = 'fas fa-sun';
     }
 
-    // ============== INIT ==============
-    function init() {
-      // Load saved theme
-      if (localStorage.getItem('quiklearn-theme') === 'light') {
-        document.body.classList.add('light');
-        document.getElementById('theme-icon').className = 'fas fa-sun';
-      }
-      loadQuestion();
-    }
-
-    window.onload = init;
+    // Welcome Confetti
+    setTimeout(() => {
+      confetti({
+        particleCount: 120,
+        spread: 70,
+        origin: { y: 0.6 }
+      });
+    }, 600);
   </script>
 </body>
 </html>
